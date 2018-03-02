@@ -58,5 +58,4 @@ public class Parser extends DefaultHandler {
             Root.getChildren().add(new TreeItem<String>(data));
         }
     }
-
 }
