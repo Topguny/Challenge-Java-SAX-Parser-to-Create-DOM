@@ -18,15 +18,15 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author lukas
  */
 public class Parser extends DefaultHandler {
-    static TreeItem<String> XMLRoot = new TreeItem();
+    static TreeItem<String> Root = new TreeItem();
     
     static TreeItem<String> parser(File XMLFile) throws Exception  {
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse(XMLFile, new Parser());           
-            TreeItem<String> item = XMLRoot.getChildren().get(0);
-            XMLRoot.getChildren().clear();
+            TreeItem<String> item = Root.getChildren().get(0);
+            Root.getChildren().clear();
             return item;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -37,14 +37,14 @@ public class Parser extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         TreeItem item = new TreeItem<String>(qName);
-        XMLRoot.getChildren().add(item);
-        XMLRoot = item;
+        Root.getChildren().add(item);
+        Root = item;
     }
     
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         try {
-        XMLRoot = XMLRoot.getParent();
+        Root = Root.getParent();
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
@@ -55,7 +55,7 @@ public class Parser extends DefaultHandler {
     public void characters(char ch[], int start, int length) throws SAXException {
         String data = String.valueOf(ch, start, length).trim();
         if (!data.isEmpty()) {
-            XMLRoot.getChildren().add(new TreeItem<String>(data));
+            Root.getChildren().add(new TreeItem<String>(data));
         }
     }
 
